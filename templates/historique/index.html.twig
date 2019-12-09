@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My History{% endblock %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <div class="container">
+            That's all your tasks
+            <div class="row flex">
+                {% for element in tasks %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ element.getName }}
+                                </h5>
+
+
+                                        <div class="card">
+                                            <div class="checkbox todo-check">
+                                                <label>
+                                                    <input type="checkbox" name="State" onclick="{{ elem.changeState }}" >
+                                                    <p class="card-text">{{ elem.Description }}</p>
+                                                    <div class="card-text">{{ elem.date|date('d-m-Y') }}</div>
+                                                </label>
+                                            </div>
+
+                                        </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

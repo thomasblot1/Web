@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Todo Website{% endblock %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        Welcome, Please add some todo lists
+    </div>
+    <div class="container">
+        That's all your tasks
+        <div class="row flex">
+            {% for element in Todo|sort %}
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ path('admin.todo.edit', {id: element.id} ) }}">{{ element.Name }}</a>
+                            </h5>
+                            {% for elem in tasks %}
+                                {% if element.searchTaskInTodo(elem) %}
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <a href="{{ path('admin.task.edit', {id: elem.id} )}}">{{ elem.Name }}</a>
+                                            <div class="checkbox todo-check">
+                                                <label>
+                                                    <input type="checkbox" name="State" onclick="{{ elem.changeState(elem) }}" >
+                                                </label>
+                                            </div>
+                                            <p class="card-text">{{ elem.Description }}</p>
+                                            <div class="card-text">{{ elem.date|date('d-m-Y') }}</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

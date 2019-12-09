@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <h2>Edit your todo</h2>
+        {{  include('admin/todo/edit.html.twig', {form: form, button:'Edit'}) }}
+    </div>
+{% endblock %}
+

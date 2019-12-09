@@ -1,0 +1,20 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        {{ form_row(form.Name) }}</div>
+    <div class="col-md-6">
+        {{ form_row(form.Description) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">{{ form_row(form.State) }}</div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-2">{{ form_row(form.Priority) }}</div>
+</div>
+
+<button class="btn btn-primary">{{ button|default('Create') }}</button>
+{{ form_end(form) }}

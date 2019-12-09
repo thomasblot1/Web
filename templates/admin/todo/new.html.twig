@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container mt-4">
+        <h2>Register your todo</h2>
+        {% include 'admin/todo/_form.html.twig', {form: form, button:'Create'} %}
+    </div>
+{% endblock %}
