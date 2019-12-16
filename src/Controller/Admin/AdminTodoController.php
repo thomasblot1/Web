@@ -30,7 +30,7 @@ class AdminTodoController extends AbstractController
     }
 
     /**
-     * @Route("/admin/task/{id}", name= "admin.todo.edit")
+     * @Route("/api/edit/task/{id}", name= "admin.todo.edit")
      * @param Todo $todo
      * @param Request $request
      * @return Response

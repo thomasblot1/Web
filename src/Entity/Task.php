@@ -60,9 +60,29 @@ class Task
         $this->setPriority(1);
     }
 
+    public function rebuild($id, $Todo, $Name, $Description, $Priority, $State)
+    {
+        $this->setState($State);
+        $this->Date=(new \DateTime());
+        $this->setPriority($Priority);
+        $this->setDescription($Description);
+        $this->setName($Name);
+        $this->setTodo($Todo);
+        $this->setId($id);
+    }
+
     public function getId()
     {
         return $this->id;
+    }
+    public function gettaks()
+    {
+        return $this->id;
+    }
+    public function setId($id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getTodo(): ?Todo

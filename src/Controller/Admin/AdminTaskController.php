@@ -67,39 +67,33 @@ class AdminTaskController extends AbstractController
     /**
      * @Route("/api/task/create", name="admin.task.new")
      * @param Request $request
+     * @param $id
+     * @param $Todo
+     * @param $Name
+     * @param $Description
+     * @param $Priority
+     * @param $State
      * @return Response
      */
-    public function new(Request $request){
-        $task=new Task();
-        $form=$this->createForm(TaskType::class,$task);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($task);
-            $this->em->flush();
-            return $this->redirectToRoute('admin.task.index');
-        }
-        return $this->render("admin/task/new.html.twig", [
-            'task'=>$task,
-            'form'=>$form->createView()
-        ]);
-
+    public function new(Request $request,$id, $Todo, $Name, $Description, $Priority, $State){
+        $task = $this->getTask();
+        $task->rebuild($id, $Todo, $Name, $Description, $Priority, $State);
+        $this->em->persist($task);
+        $this->em->flush();
+        return new Response('', 200);
     }
     /**
      * @Route("/api/task/edit/{id}")
      */
     public function update(Request $request,$task)
     {
-
         $entityManager = $this->getDoctrine()->getManager();
         $task = $entityManager->getRepository(Task::class)->find($id);
-
         if (!$task) {
             throw $this->createNotFoundException(
                 'No task found for id '.$id
             );
         }
-
         $task->setName($task->getName());$task->setDescription($task->getDescription());$task->setPriority($task->getPriority());
         $entityManager->flush();
     }
