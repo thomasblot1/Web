@@ -4,21 +4,30 @@ namespace Symfony\Component\VarExporter\Internal;
 
 return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
     $o = [
-        clone (Registry::$prototypes['Symfony\\Component\\Routing\\Annotation\\Route'] ?? Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        clone (($p = &Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        clone ($p['Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Method'] ?? Registry::p('Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Method')),
     ],
     null,
     [
         'Symfony\\Component\\Routing\\Annotation\\Route' => [
             'path' => [
-                '/api/admin/task/create',
+                '/api/task/create',
             ],
             'name' => [
                 'admin.task.new',
             ],
         ],
+        'Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Method' => [
+            'methods' => [
+                1 => [
+                    'GET',
+                ],
+            ],
+        ],
     ],
     [
         $o[0],
+        $o[1],
     ],
     []
 );

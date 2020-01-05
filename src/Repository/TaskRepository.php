@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Entity\Todo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 use phpDocumentor\Reflection\Types\Boolean;
 use PhpParser\Node\Scalar\String_;
 
@@ -85,6 +86,17 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findByName(String $TaskName)
+    {
+        try {
+            return $this->createQueryBuilder('t')->setParameter('name', $TaskName)->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return('404');
+        }
+    }
+
     public function deleteTask(Task $task){
         $qb = $this->createQueryBuilder('t');
         $qb->delete('Task', 't');

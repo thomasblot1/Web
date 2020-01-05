@@ -4935,18 +4935,6 @@
         <argument>make:migration</argument>
       </call>
     </service>
-    <service id=".service_locator._vzxoH4" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="task" type="service" id=".errored..service_locator._vzxoH4.App\Entity\Task"/>
-      </argument>
-    </service>
-    <service id=".service_locator.HWAlYHL" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="todo" type="service" id=".errored..service_locator.HWAlYHL.App\Entity\Todo"/>
-      </argument>
-    </service>
     <service id=".service_locator.Yrbq94C" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4954,15 +4942,11 @@
         <argument key="todorep" type="service" id="App\Repository\TodoRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.6AiRum_" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.lbw5von" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\Admin\AdminTaskController::edit" type="service" id=".service_locator._vzxoH4"/>
-        <argument key="App\Controller\Admin\AdminTodoController::edit" type="service" id=".service_locator.HWAlYHL"/>
         <argument key="App\Controller\HistoriqueController::index" type="service" id=".service_locator.Yrbq94C"/>
         <argument key="App\Controller\HomeController::index" type="service" id=".service_locator.Yrbq94C"/>
-        <argument key="App\Controller\Admin\AdminTaskController:edit" type="service" id=".service_locator._vzxoH4"/>
-        <argument key="App\Controller\Admin\AdminTodoController:edit" type="service" id=".service_locator.HWAlYHL"/>
         <argument key="App\Controller\HistoriqueController:index" type="service" id=".service_locator.Yrbq94C"/>
         <argument key="App\Controller\HomeController:index" type="service" id=".service_locator.Yrbq94C"/>
       </argument>
@@ -5384,12 +5368,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.6AiRum_"/>
+      <argument type="service" id=".service_locator.lbw5von"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.6AiRum_"/>
+      <argument type="service" id=".service_locator.lbw5von"/>
     </service>
     <service id=".service_locator.UwRI0uT" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
@@ -5413,8 +5397,6 @@
         <argument key="security.token_storage" type="service" id="security.token_storage"/>
       </argument>
     </service>
-    <service id=".errored..service_locator._vzxoH4.App\Entity\Task" class="App\Entity\Task"/>
-    <service id=".errored..service_locator.HWAlYHL.App\Entity\Todo" class="App\Entity\Todo"/>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <argument type="service" id=".service_locator.UvMMnf."/>
       <argument type="collection">
@@ -5770,7 +5752,7 @@
     <service id="fos_rest.router" alias="router.default"/>
     <service id="fos_rest.view_handler" alias="fos_rest.view_handler.default" public="true"/>
     <service id="fos_rest.inflector" alias="fos_rest.inflector.doctrine"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.6AiRum_"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.lbw5von"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="fos_rest.serializer" alias="fos_rest.serializer.symfony"/>

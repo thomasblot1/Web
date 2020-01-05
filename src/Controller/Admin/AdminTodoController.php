@@ -4,10 +4,15 @@ use App\Entity\Todo;
 use App\Form\TodoType;
 use App\Repository\TodoRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use PhpParser\Node\Scalar\String_;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class AdminTodoController extends AbstractController
 {
@@ -20,59 +25,91 @@ class AdminTodoController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin.todo.index")
+     * @Route("api/todo/delete/{Name}", name="todo.delete")
+     * @param $Name
      * @return Response
      */
-    public function index(){
-        $tasks=$this->represitory->findAll();
-
-        return($this->render('admin/todo/index.html.twig',['task'=>$tasks]));
+    public function deleteTodo($Name){
+        // from inside a controller
+        $repository = $this->getDoctrine()->getRepository(Todo::class);
+        $todo = $repository->findByName($Name);
+        $this->em->remove($todo);
+        $this->em->flush();
+        return new Response( '',200);
     }
 
     /**
-     * @Route("/api/edit/task/{id}", name= "admin.todo.edit")
-     * @param Todo $todo
-     * @param Request $request
+     * @Route("api/todo/getTodos", name="todo.getTodos")
      * @return Response
      */
-    public function edit(Todo $todo, Request $request){
-        $form=$this->createForm(TodoType::class, $todo);
-        $form->handleRequest($request);
+    public function getTodos(){
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $todos=$this->represitory->findAll();
+        $jsonObject = $serializer->serialize($todos, 'json', [
+            'circular_reference_handler' => function ($todos) {
+                return $todos->get;
+            }]);
+        return new Response($jsonObject, 200, ['Content-Type' => 'application/json']);
+    }
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->flush();
-            return $this->redirectToRoute('admin.task.index');
+
+    /**
+     * @Route("api/todo/getTodo/{Name}", name="admin.todo.getTodos")
+     * @return Response
+     */
+    public function getTodo($Name){
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+
+
+        $todo=$this->represitory->findByName($Name);
+        if ($todo == '404') {
+            throw $this->createNotFoundException(
+                'No todo found for name '.$Name
+            );
         }
-
-        return $this->render("admin/task/edit.html.twig", [
-            'task'=>$todo,
-            'form'=>$form->createView()
-        ]);
-
+        $jsonObject = $serializer->serialize($todo, 'json', [
+            'circular_reference_handler' => function ($todo) {
+                return $todo->get;
+            }]);
+        return new Response($jsonObject, 200, ['Content-Type' => 'application/json']);
     }
 
     /**
-     * @Route("/admin/task/create", name="admin.todo.new")
-     * @param Request $request
+     * @Route("/api/todo/update/{id}")
+     * @param $Name
      * @return Response
      */
-    public function new(Request $request){
-        $todo=new Todo();
-        $form=$this->createForm(TodoType::class,$todo);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($todo);
-            $this->em->flush();
-            return $this->redirectToRoute('admin.todo.index');
+    public function update($Name)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $todo = $this->represitory->findByName($Name);
+        if ($todo == '404') {
+            throw $this->createNotFoundException(
+                'No todo found for name '.$Name
+            );
         }
-        return $this->render("admin/todo/new.html.twig", [
-            'task'=>$task,
-            'form'=>$form->createView()
-        ]);
-
+        $todo->setName($Name);
+        $entityManager->flush();
+        return new Response('', 200);
     }
 
 
+    /**
+     * @Route("/admin/todo/create", name="admin.todo.new")
+     * @param $Name
+     * @return Response
+     */
+    public function new($Name){
+        $todo = new Todo();
+        $todo->setName($Name);
+        $this->em->persist($todo);
+        $this->em->flush();
 
+        return new Response('', 200);
+    }
 }

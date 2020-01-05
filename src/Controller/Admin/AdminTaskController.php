@@ -5,6 +5,7 @@ use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Integer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,8 @@ class AdminTaskController extends AbstractController
     }
 
     /**
-     * @Route("/api/task/GetTasks", name="admin.task.index")
+     * @Route("/api/task/getTasks", name="admin.task.index")
+     * @Method({"GET","POST"})
      * @return Response
      */
     public function getTasks(){
@@ -41,63 +43,80 @@ class AdminTaskController extends AbstractController
 
         return new Response($jsonObject, 200, ['Content-Type' => 'application/json']);
     }
-
     /**
-     * @Route("/api/task/{id}", name= "admin.task.edit")
-     * @param Task $task
-     * @param Request $request
+     * @Route("/api/task/getTask/{Name}", name="admin.task.index.id")
+     * @Method({"GET","POST"})
      * @return Response
      */
-    public function edit(Task $task, Request $request){
-        $form=$this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
+    public function getTask($Name){
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $task=$this->represitory->findByName($Name);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->flush();
-            return $this->redirectToRoute('admin.task.index');
-        }
-
-        return $this->render("admin/task/edit.html.twig", [
-            'task'=>$task,
-            'form'=>$form->createView()
+        $jsonObject = $serializer->serialize($task, 'json', [
+            'circular_reference_handler' => function ($task) {
+                return $task->get;
+            }
         ]);
 
+        return new Response($jsonObject, 200, ['Content-Type' => 'application/json']);
     }
 
     /**
      * @Route("/api/task/create", name="admin.task.new")
-     * @param Request $request
-     * @param $id
+     * @Method({"GET"})
      * @param $Todo
      * @param $Name
      * @param $Description
      * @param $Priority
-     * @param $State
      * @return Response
      */
-    public function new(Request $request,$id, $Todo, $Name, $Description, $Priority, $State){
-        $task = $this->getTask();
-        $task->rebuild($id, $Todo, $Name, $Description, $Priority, $State);
+    public function add($Todo, $Name, $Description, $Priority){
+        $task = new task();
+        $task->affect($Todo, $Name, $Description, $Priority);
         $this->em->persist($task);
         $this->em->flush();
         return new Response('', 200);
     }
+
     /**
-     * @Route("/api/task/edit/{id}")
+     * @Route("api/task/delete/{Name}", name="task.delete")
+     * @Method({"PUT"})
+     * @param $Name
+     * @return Response
      */
-    public function update(Request $request,$task)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $task = $entityManager->getRepository(Task::class)->find($id);
-        if (!$task) {
-            throw $this->createNotFoundException(
-                'No task found for id '.$id
-            );
-        }
-        $task->setName($task->getName());$task->setDescription($task->getDescription());$task->setPriority($task->getPriority());
-        $entityManager->flush();
+    public function deleteTask($Name){
+        $repository = $this->getDoctrine()->getRepository(Task::class);
+        $task = $repository->findByName($Name);
+        $this->em->remove($task);
+        $this->em->flush();
+        return new Response( '',200);
     }
 
-
+    /**
+     * @Route("/api/task/edit/{Name}")
+     * @param $Todo
+     * @param $Name
+     * @Method({"PUT"})
+     * @param $Description
+     * @param $Priority
+     */
+    public function update($Todo, $Name, $Description, $Priority)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $task = $this->represitory->findByName($Name);
+        if (!$task) {
+            throw $this->createNotFoundException(
+                'No task found for name '.$Name
+            );
+        }
+        $task->setName($Name);
+        $task->setDescription($Description);
+        $task->setPriority($Priority);
+        $task->setTodo($Todo);
+        $task->setDate();
+        $entityManager->flush();
+    }
 
 }

@@ -13,8 +13,10 @@ return [
         '/_profiler/search_bar' => [[['_route' => '_profiler_search_bar', '_controller' => 'web_profiler.controller.profiler::searchBarAction'], null, null, null, false, false, null]],
         '/_profiler/phpinfo' => [[['_route' => '_profiler_phpinfo', '_controller' => 'web_profiler.controller.profiler::phpinfoAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
-        '/api/admin' => [[['_route' => 'admin.task.index', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::index'], null, null, null, false, false, null]],
-        '/admin' => [[['_route' => 'admin.todo.index', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::index'], null, null, null, false, false, null]],
+        '/api/task/getTasks' => [[['_route' => 'admin.task.index', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::getTasks'], null, null, null, false, false, null]],
+        '/api/task/create' => [[['_route' => 'admin.task.new', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::new'], null, null, null, false, false, null]],
+        '/api/todo/getTodos' => [[['_route' => 'todo.getTodos', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::getTodos'], null, null, null, false, false, null]],
+        '/admin/todo/create' => [[['_route' => 'admin.todo.new', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::new'], null, null, null, false, false, null]],
         '/historique' => [[['_route' => 'historique', '_controller' => 'App\\Controller\\HistoriqueController::index'], null, null, null, false, false, null]],
         '/api/home' => [[['_route' => 'app_home_index', '_controller' => 'App\\Controller\\HomeController::index'], null, ['GET' => 0, 'HEAD' => 1], null, false, false, null]],
         '/api/create_task' => [[['_route' => 'app_home_create_task', '_controller' => 'App\\Controller\\HomeController::create_Task'], null, ['GET' => 0, 'HEAD' => 1], null, false, false, null]],
@@ -37,14 +39,16 @@ return [
                         .'|(*:159)'
                     .')'
                 .')'
-                .'|/a(?'
-                    .'|pi/admin/task/(?'
-                        .'|([^/]++)(*:199)'
-                        .'|create(*:213)'
+                .'|/api/t(?'
+                    .'|ask/(?'
+                        .'|getTask/([^/]++)(*:201)'
+                        .'|delete/([^/]++)(*:224)'
+                        .'|edit/([^/]++)(*:245)'
                     .')'
-                    .'|dmin/task/(?'
-                        .'|([^/]++)(*:243)'
-                        .'|create(*:257)'
+                    .'|odo/(?'
+                        .'|delete/([^/]++)(*:276)'
+                        .'|getTodo/([^/]++)(*:300)'
+                        .'|update/([^/]++)(*:323)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -57,11 +61,13 @@ return [
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception::showAction'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception::cssAction'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        199 => [[['_route' => 'admin.task.edit', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::edit'], ['id'], null, null, false, true, null]],
-        213 => [[['_route' => 'admin.task.new', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::new'], [], null, null, false, false, null]],
-        243 => [[['_route' => 'admin.todo.edit', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::edit'], ['id'], null, null, false, true, null]],
-        257 => [
-            [['_route' => 'admin.todo.new', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::new'], [], null, null, false, false, null],
+        201 => [[['_route' => 'admin.task.index.id', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::getTask'], ['Name'], null, null, false, true, null]],
+        224 => [[['_route' => 'task.delete', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::deleteTask'], ['Name'], null, null, false, true, null]],
+        245 => [[['_route' => 'app_admin_admintask_update', '_controller' => 'App\\Controller\\Admin\\AdminTaskController::update'], ['Name'], null, null, false, true, null]],
+        276 => [[['_route' => 'todo.delete', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::deleteTodo'], ['Name'], null, null, false, true, null]],
+        300 => [[['_route' => 'admin.todo.getTodos', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::getTodo'], ['Name'], null, null, false, true, null]],
+        323 => [
+            [['_route' => 'app_admin_admintodo_update', '_controller' => 'App\\Controller\\Admin\\AdminTodoController::update'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

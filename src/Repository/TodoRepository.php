@@ -6,6 +6,7 @@ use App\Entity\Owner;
 use App\Entity\Todo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\Validator\Tests\Fixtures\ToString;
 
@@ -59,4 +60,12 @@ class TodoRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByName(String $TodoName)
+    {
+        try {
+            return $this->createQueryBuilder('t')->setParameter('name', $TodoName)->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return('404');
+        }
+    }
 }

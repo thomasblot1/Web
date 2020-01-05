@@ -243,3 +243,7 @@ d759ce,::1,GET,http://localhost/Web/public/api/home,1574179010,1305ad,200
 1305ad,::1,GET,http://localhost/Web/public/api/home,1574179011,,500
 aaab15,::1,GET,http://localhost/Web/Public/api/home,1574423630,0718eb,200
 0718eb,::1,GET,http://localhost/Web/Public/api/home,1574423630,,500
+edaa26,127.0.0.1,GET,http://127.0.0.1:8000/api/task/getTasks,1577024809,517fb4,200
+517fb4,127.0.0.1,POST,http://127.0.0.1:8000/api/task/getTasks,1577024809,,500
+3feecd,127.0.0.1,GET,http://127.0.0.1:8000/api/task/getTasks,1577025605,cfc489,200
+cfc489,127.0.0.1,POST,http://127.0.0.1:8000/api/task/getTasks,1577025605,,500

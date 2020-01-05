@@ -60,28 +60,32 @@ class Task
         $this->setPriority(1);
     }
 
-    public function rebuild($id, $Todo, $Name, $Description, $Priority, $State)
+    public function rebuild( $Todo, $Name, $Description, $Priority)
     {
-        $this->setState($State);
         $this->Date=(new \DateTime());
         $this->setPriority($Priority);
         $this->setDescription($Description);
         $this->setName($Name);
         $this->setTodo($Todo);
-        $this->setId($id);
     }
 
     public function getId()
     {
         return $this->id;
     }
-    public function gettaks()
+    public function gettaks($name)
     {
-        return $this->id;
+
+        return $this;
     }
     public function setId($id): self
     {
         $this->id = $id;
+        return $this;
+    }
+    public function setDate(): self
+    {
+        $this->Date=(new \DateTime());
         return $this;
     }
 
@@ -153,5 +157,13 @@ class Task
     public function __toString()
     {
         return (string) $this->getTodo();
+    }
+
+    public function affect($Todo, $Name, $Description, $Priority)
+    {
+        $this->Name = $Name;
+        $this->setTodo($Todo);
+        $this->Description = $Description;
+        $this->Priority = $Priority;
     }
 }
