@@ -42,21 +42,9 @@ class HomeController extends AbstractController
         $encoders = array( new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
-        $t_Name = "personnel";
-        $user = new Owner('Thomas');
-        $premiere = new Todo();
-        $premiere->setName('YOUYOU');
-        $premiere->setOwner($user);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);  $em->persist($premiere);
-        $em->flush();
         $task = $rep->findAllTask(true);
         $Todo = $todorep->findAllTodos();
         $tasks = $rep->findOneTask(true);//get the undone task
-
-        $encoders = [new JsonEncoder()]; // If no need for XmlEncoder
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
 
 // Serialize your object in Json
         $jsonObject = $serializer->serialize($task, 'json', [
